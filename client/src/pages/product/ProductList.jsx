@@ -1,9 +1,26 @@
-import { useState } from "react";
-import { ProductCard } from "../../components/element/ProductCard";
+import { useEffect, useState } from "react";
 import { FilterBar } from "./components/FilterBar";
+import { fetchProducts } from "./productService";
+import { ProductCard } from "../../components";
 
 export const ProductList = () => {
   const [show, setShow] = useState(false);
+  const [products, setProducts] = useState([]);
+
+  const fetchAndSetProducts = () => {
+    try {
+      fetchProducts().then((res) => {
+        console.log(res.docs);
+
+        setProducts(res?.docs);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchAndSetProducts();
+  }, []);
 
   const handleShow = () => {
     setShow(!show);
@@ -37,8 +54,9 @@ export const ProductList = () => {
         </div>
 
         <div className="flex flex-wrap justify-center lg:flex-row">
-          {/* Product Card */}
-          <ProductCard />
+          {products.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
         </div>
       </section>
       {show && <FilterBar setShow={setShow} />}

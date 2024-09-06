@@ -4,8 +4,25 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
+import { useEffect, useState } from "react";
 
 export const Header = () => {
+  const [darkMode, setDarkMode] = useState(
+    JSON.parse(localStorage.getItem("darkMode")) || false
+  );
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
+  const handleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
   return (
     <header>
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -24,7 +41,7 @@ export const Header = () => {
             </span>
           </Link>
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
-            <IconButton>
+            <IconButton onClick={handleDarkMode}>
               <SettingsIcon className=" cursor-pointer text-2xl text-gray-700 dark:text-white" />
             </IconButton>
             <IconButton>
