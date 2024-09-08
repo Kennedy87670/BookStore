@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { fetchProductById } from "../productService";
 import { Rating } from "@mui/material";
 import { useParams } from "react-router-dom";
+import { useTitle } from "../../../hooks/useTitle";
 
 export const ProductDetail = () => {
   const [product, setProducts] = useState({});
   const { id } = useParams();
+  useTitle(product.name);
 
   const fetchById = () => {
     try {

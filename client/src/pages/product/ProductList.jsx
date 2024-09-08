@@ -2,17 +2,22 @@ import { useEffect, useState } from "react";
 import { FilterBar } from "./components/FilterBar";
 import { fetchProducts } from "./productService";
 import { ProductCard } from "../../components";
+import { useLocation } from "react-router-dom";
+import { useTitle } from "../../hooks/useTitle";
+import { useFilter } from "../../context";
 
 export const ProductList = () => {
+  const { productList, initialProductList } = useFilter();
   const [show, setShow] = useState(false);
-  const [products, setProducts] = useState([]);
+
+  const search = useLocation().search;
+  useTitle("Explore our Ebook Collection");
+  const searchTerm = new URLSearchParams(search).get("name");
 
   const fetchAndSetProducts = () => {
     try {
-      fetchProducts().then((res) => {
-        console.log(res.docs);
-
-        setProducts(res?.docs);
+      fetchProducts(searchTerm).then((res) => {
+        initialProductList(res?.docs);
       });
     } catch (error) {
       console.log(error);
@@ -20,7 +25,7 @@ export const ProductList = () => {
   };
   useEffect(() => {
     fetchAndSetProducts();
-  }, []);
+  }, [searchTerm]);
 
   const handleShow = () => {
     setShow(!show);
@@ -30,7 +35,7 @@ export const ProductList = () => {
       <section className="my-5">
         <div className="my-5 flex justify-between">
           <span className="text-2xl font-semibold dark:text-slate-100 mb-5">
-            All eBooks (15)
+            All eBooks ({productList.length})
           </span>
           <span>
             <button
@@ -54,7 +59,7 @@ export const ProductList = () => {
         </div>
 
         <div className="flex flex-wrap justify-center lg:flex-row">
-          {products.map((product) => (
+          {productList.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
         </div>

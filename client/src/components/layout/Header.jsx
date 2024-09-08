@@ -5,11 +5,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import { useEffect, useState } from "react";
+import { Search } from "../section/Search";
 
 export const Header = () => {
   const [darkMode, setDarkMode] = useState(
     JSON.parse(localStorage.getItem("darkMode")) || false
   );
+
+  const [searchSection, setSearchSection] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
@@ -44,7 +47,7 @@ export const Header = () => {
             <IconButton onClick={handleDarkMode}>
               <SettingsIcon className=" cursor-pointer text-2xl text-gray-700 dark:text-white" />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => setSearchSection(!searchSection)}>
               <SearchIcon className=" cursor-pointer text-2xl text-gray-700 dark:text-white" />
             </IconButton>
             <IconButton>
@@ -58,6 +61,7 @@ export const Header = () => {
           </div>
         </div>
       </nav>
+      {searchSection && <Search setSearchSection={setSearchSection} />}
     </header>
   );
 };
