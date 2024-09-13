@@ -68,8 +68,8 @@ export const FilterProvider = ({ children }) => {
   const value = {
     state,
     dispatch,
-    productList: state.productList,
-    products: filteredProductList,
+    products: state.productList,
+    productsFilter: filteredProductList,
     initialProductList,
   };
   return (

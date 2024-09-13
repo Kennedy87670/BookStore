@@ -1,4 +1,7 @@
+import { useFilter } from "../../../context";
+
 export const FilterBar = ({ setShow }) => {
+  const { state, dispatch } = useFilter();
   return (
     <section className="filter">
       <div
@@ -143,6 +146,13 @@ export const FilterBar = ({ setShow }) => {
                   id="best-seller"
                   type="checkbox"
                   value=""
+                  checked={state.bestSellerOnly || false}
+                  onClick={() =>
+                    dispatch({
+                      type: "BEST_SELLER_ONLY",
+                      payload: { bestSellerOnly: !state.bestSellerOnly },
+                    })
+                  }
                   className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label
@@ -157,6 +167,13 @@ export const FilterBar = ({ setShow }) => {
                   id="only-instock"
                   type="checkbox"
                   value=""
+                  checked={state.onlyInStock || false}
+                  onClick={() =>
+                    dispatch({
+                      type: "ONLY_IN_STOCK",
+                      payload: { onlyInStock: !state.onlyInStock },
+                    })
+                  }
                   className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label
